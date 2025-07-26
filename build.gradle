@@ -18,9 +18,26 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+// 데이터 처리 및 DB 연결
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA를 이용한 데이터 접근 및 ORM 지원
+    runtimeOnly 'com.mysql:mysql-connector-j' // MySQL 데이터베이스 드라이버 (실행 시 필요)
+    compileOnly 'org.projectlombok:lombok' // Lombok: 코드 간결화용 (Getter, Setter, 생성자 자동 생성 등)
+    annotationProcessor 'org.projectlombok:lombok' // 컴파일 시만 사용 (compileOnly) + 애노테이션 프로세서로 동작
+
+    // 테스트 관련
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // 스프링 부트 테스트 스타터 (JUnit, Mockito 등 포함)
+    testImplementation 'org.springframework.security:spring-security-test' // Spring Security 관련 테스트 지원 (보안 시나리오 테스트 가능)
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // JUnit Platform 런처 (테스트 실행시 필요)
+
+    // 웹 및 보안 관련
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Spring MVC 웹 개발용 스타터 (REST 컨트롤러, Tomcat 내장 등)
+    implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security 보안 프레임워크
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf와 Spring Security 연동 지원 (보안 관련 태그 사용 가능)
+
+    // Thymeleaf 관련
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf 템플릿 엔진 기본 스타터 - 서버에서 HTML 렌더링용
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation 지원 스타터 - 폼 데이터 검증용 (예: @Valid, @NotBlank 등)
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.0.0' // Thymeleaf 레이아웃 다이얼렉트 - 레이아웃 템플릿 재사용 및 분리 지원
 }
 
 tasks.named('test') {
