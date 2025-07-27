@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>main homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/main.css}">
+    <script th:inline="javascript" type="text/javascript" th:src="@{/js/pages/main.js}"></script>
+</head>
+
+<!-- 상단 이미지 영역 fragment -->
+<section layout:fragment="section-top">
+    <div class="sec-image-container">
+        <div class="section-top-nimg">
+            <div class="sec-sub-nav">
+                <ul>
+                    <li><a href="/consultings">온라인상담</a></li>
+                    <li class="active"><a href="/kakatalk">카톡상담</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <h1> 카카오톡 </h1>
+
+    </div>
+</th:block>
+</html>

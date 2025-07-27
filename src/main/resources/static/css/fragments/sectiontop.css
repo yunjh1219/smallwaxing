@@ -1,0 +1,65 @@
+.sec-image-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.section-top-img {
+    width: 100%;
+    height: 810px;
+    background-color: #c75e5e;
+    background-size: cover;
+    background-position: center;
+    position: relative; /* 자식 .sec-sub-nav의 기준 */
+}
+
+.section-top-nimg {
+    width: 100%;
+    height: 75px;
+    background-color: #c75e5e;
+    background-size: cover;
+    background-position: center;
+    position: relative; /* 자식 .sec-sub-nav의 기준 */
+}
+
+.sec-sub-nav {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0; /* 사각형 */
+}
+
+.sec-sub-nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+
+}
+
+.sec-sub-nav a {
+    display: block;
+    padding: 15px 40px;
+    background-color: rgba(20, 20, 20, 0.95);
+    color: #bbb; /* 회색 글씨 */
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s;
+}
+
+.sec-sub-nav a:hover {
+    color: #fff; /* hover 시 흰색 글씨 */
+}
+
+/* '스몰왁싱 특별함' 메뉴가 활성화(현재 페이지)일 때 스타일 */
+.sec-sub-nav li.active,
+.sec-sub-nav li.active a {
+    background-color: #fff; /* 배경 흰색 */
+    color: rgba(40, 40, 40, 0.95); /* 글자색 짙은 다크 그레이 */
+}

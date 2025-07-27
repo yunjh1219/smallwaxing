@@ -170,13 +170,13 @@
 /*-- 햄버거 메뉴 ------------------------------------------*/
 
 .hamburger-menu {
-
     position: relative;
     display: flex;
-    align-items: center; /* 수직 중앙 정렬 */
+    align-items: center;
     background: none;
-    margin-right: 50px;
-    border: none; /* 경계선 없애기 */
+    margin-left: auto; /* 왼쪽 여백을 최대화하여 오른쪽 정렬 */
+    margin-right: 50px; /* 오른쪽 여백 */
+    border: none;
 }
 
 
