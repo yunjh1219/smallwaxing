@@ -65,8 +65,8 @@
 
 /* 메인메뉴 링크 */
 .gnb_depth1 a{
-    font-weight: bold; /* 폰트 두께를 굵게 설정 */
-    color: #585858; /* 링크 색상을 회색으로 설정 */
+
+    color: black;
     position: relative; /* 후속 가상 요소의 위치를 위해 relative 설정 */
     display: inline-block; /* 인라인 블록으로 설정하여 너비 조정 가능 */
     text-decoration: none; /* 밑줄 제거 */
@@ -110,7 +110,7 @@
 }
 
 .gnb_depth2 li{
-    padding: 5px;
+    padding: 6px;
 }
 
 .gnb_depth2 li:hover{
@@ -122,8 +122,8 @@
 }
 
 .gnb_depth2 li a{
-    font-weight: bold;
-    color: #adadad; /* 드롭다운 링크 색상 */
+    font-size: 15px;
+    color: #333333; /* 드롭다운 링크 색상 */
     text-decoration: none; /* 밑줄 제거 */
     display: block;
 }
