@@ -6,7 +6,7 @@
 <!-- headerFragment 선언 -->
 <th:block th:fragment="headerFragment">
     <div class="header">
-        <!-- 로그인 / 회원가입 -->
+
         <nav class = "gnb">
             <div class="logo">
                 <a href="/" class="logo">Brand</a>
@@ -44,25 +44,8 @@
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" onclick="showUnderConstructionMessage()">가격안내</a></li>
-
-
-                <!-- 관리자 메뉴 (초기에는 숨김 처리) -->
-                <li id="adminMenu" style="display: none;">
-                    <a href="#">관리자용</a>
-                    <ul class="gnb_depth2">
-                        <li><a href="/reservation/list">예약명단</a> </li>
-                        <li><a href="/customer/list">고객명단</a> </li>
-                        <li><a href="/review/listall">리뷰등록관리</a></li>
-                    </ul>
-                </li>
-
             </ul>
-            <!-- 로그인 / 회원가입 / 로그아웃 -->
-            <div class="auth-links">
-                <a sec:authorize="isAnonymous()" href="/view/auth/login" id="loginLink" class="login" >Login</a>
-                <a sec:authorize="isAnonymous()" href="/view/auth/joinOne" id="joinLink" class="signupone">회원가입</a>
-                <button id="logoutBtn" sec:authorize="isAuthenticated()">로그아웃</button>
-            </div>
+
 
 
             <!--        <a href="#" class="btn_gnb"></a>-->
