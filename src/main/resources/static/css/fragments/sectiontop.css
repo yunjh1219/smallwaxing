@@ -63,3 +63,24 @@
     background-color: #fff; /* 배경 흰색 */
     color: rgba(40, 40, 40, 0.95); /* 글자색 짙은 다크 그레이 */
 }
+
+.sec-info-container {
+    height: 220px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 쌓기 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.sec-info-container h1 {
+    font-size: 40px;
+}
+
+.sec-info-container p {
+    font-size: 23px;
+    color: #c75e5e;
+}

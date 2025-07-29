@@ -6,9 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
+    //기본 페이지
     @GetMapping("/")
     public String main(){
         return "pages/main";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "pages/admin";
     }
 
     //스몰왁싱 카테고리
@@ -23,9 +29,9 @@ public class MainController {
     }
 
     //서비스 카테고리
-    @GetMapping("/brazlianwaxing") //바디왁싱
-    public String brazlianwaxing(){
-        return "pages/service/brazlianwaxing";
+    @GetMapping("/brazilianwaxing") //바디왁싱
+    public String brazilianwaxing(){
+        return "pages/service/brazilianwaxing";
     }
     @GetMapping("/bodywaxing") //바디왁싱
     public String bodywaxing(){
