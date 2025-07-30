@@ -34,13 +34,19 @@ dependencies {
 
     // 웹 및 보안 관련
     implementation 'org.springframework.boot:spring-boot-starter-web' // Spring MVC 웹 개발용 스타터 (REST 컨트롤러, Tomcat 내장 등)
-//    implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security 보안 프레임워크
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf와 Spring Security 연동 지원 (보안 관련 태그 사용 가능)
+    implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security 보안 프레임워크
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf와 Spring Security 연동 지원 (보안 관련 태그 사용 가능)
 
     // Thymeleaf 관련
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf 템플릿 엔진 기본 스타터 - 서버에서 HTML 렌더링용
     implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation 지원 스타터 - 폼 데이터 검증용 (예: @Valid, @NotBlank 등)
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.0.0' // Thymeleaf 레이아웃 다이얼렉트 - 레이아웃 템플릿 재사용 및 분리 지원
+
+    //qdsl추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
