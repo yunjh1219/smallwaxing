@@ -2,14 +2,18 @@ package com.example.smallwaxing.notice.domain;
 
 import com.example.smallwaxing.image.domain.Image;
 import com.example.smallwaxing.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,9 +29,8 @@ public class Notice {
     @JoinColumn(name = "user_id")
     private User user;       //작성자
 
-    @OneToMany
-    @JoinColumn(name = "notice_id")
-    private List<Image> images; // 이미지
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;    //제목
@@ -42,8 +45,21 @@ public class Notice {
 
     @CreationTimestamp
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createdAt; //생성일
+
     @UpdateTimestamp
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime updatedAt; //수정일
+
+    @Builder
+    public Notice(User user, String title, String content, boolean isPinned) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.isPinned = isPinned;
+    }
 
 }

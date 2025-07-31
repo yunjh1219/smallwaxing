@@ -1,10 +1,7 @@
 package com.example.smallwaxing.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -23,7 +21,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, length = 20)
-    private Integer userNum;  // 아이디
+    private String userNum;  // 아이디
 
     @Column(nullable = false, length = 20)
     private String password;  // 비밀번호
@@ -46,4 +44,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role; //권한
+
+    public User(String userNum, String password, String userName, String pNum, String address, Role role) {
+        this.userNum = userNum;
+        this.password = password;
+        this.userName = userName;
+        this.pNum = pNum;
+        this.address = address;
+        this.role = role;
+    }
 }
