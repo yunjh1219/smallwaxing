@@ -23,7 +23,7 @@ public class User {
     @Column(nullable = false, length = 20)
     private String userNum;  // 아이디
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String password;  // 비밀번호
 
     @Column(nullable = false, length = 20)
@@ -45,6 +45,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role; //권한
 
+    private String refreshToken;
+
     public User(String userNum, String password, String userName, String pNum, String address, Role role) {
         this.userNum = userNum;
         this.password = password;
@@ -52,5 +54,15 @@ public class User {
         this.pNum = pNum;
         this.address = address;
         this.role = role;
+
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void invalidateRefreshToken() {
+        this.refreshToken = null;
+    }
+
 }
