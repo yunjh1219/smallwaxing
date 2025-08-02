@@ -28,17 +28,15 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").authenticated()  // 로그아웃은 인증된 사용자만
                         .requestMatchers(
+                                "/",
                                 "/login",
-                                "/logout",
-                                "/api/**",
+                                "/view/**",
                                 "/css/**",
-                                "/js/**",
                                 "/img/**",
-                                "/reservation/**",
-                                "/**"
+                                "/js/**"
                         ).permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable())

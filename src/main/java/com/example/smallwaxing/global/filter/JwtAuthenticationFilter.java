@@ -7,7 +7,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -24,25 +23,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String bearerToken = request.getHeader("Authorization");
 
-        String bearerToken = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("JWT_TOKEN".equals(cookie.getName())) {
-                    bearerToken = "Bearer " + cookie.getValue();
-                    break;
-                }
-            }
+        if (bearerToken == null || !jwtProvider.isTokenValid(bearerToken.replace("Bearer ", ""))) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            String token = bearerToken.substring(7);
-            if (jwtProvider.isTokenValid(token)) {
-                Authentication authentication = jwtProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        }
+        Authentication authentication = jwtProvider.getAuthentication(bearerToken.replace("Bearer ", ""));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }

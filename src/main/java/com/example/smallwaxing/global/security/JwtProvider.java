@@ -59,9 +59,16 @@ public class JwtProvider {
     // 3.isTokenValid 메서드
     // 이 메서드는 주어진 JWT가 유효한지 확인 유효-true / 비유효-false
     public boolean isTokenValid(String token) {
-        System.out.println("Validating token: " + token);
-        // 실제 토큰 검증 로직
-        return true;  // 실제 구현에 맞게 수정
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // 4.getAuthentication 메서드
@@ -88,7 +95,7 @@ public class JwtProvider {
         }
     }
 
-    private String createAccessToken(String userNum, Role role) { //Type type
+    private String createAccessToken(String userNum, Role role) {
         return Jwts.builder()
                 .setClaims(Map.of("role", role))
                 .setSubject(userNum)

@@ -1,10 +1,12 @@
 package com.example.smallwaxing.user.service;
 
 import com.example.smallwaxing.global.error.exception.InvalidSigningInformation;
+import com.example.smallwaxing.global.error.exception.UserNotFoundException;
 import com.example.smallwaxing.global.security.JwtProvider;
 import com.example.smallwaxing.global.security.Token;
 import com.example.smallwaxing.user.domain.User;
 import com.example.smallwaxing.user.dto.LoginRequestDto;
+import com.example.smallwaxing.user.dto.LoginUser;
 import com.example.smallwaxing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,12 +36,20 @@ public class AuthService {
             throw new InvalidSigningInformation();
         }
 
-
         Token token = jwtProvider.createToken(user.getUserNum(), user.getRole());
 
         user.updateRefreshToken(token.getRefreshToken().getData());
 
         return token;
+    }
+
+    //로그아웃
+    @Transactional
+    public void logout(LoginUser loginUser) {
+        User user = userRepository.findByUserNum(loginUser.getUserNum())
+                .orElseThrow(UserNotFoundException::new);
+
+        user.invalidateRefreshToken();
     }
 
 }

@@ -13,40 +13,44 @@
             </div>
             <ul class="gnb_depth1">
                 <li>
-                    <a th:href="@{/smallwaxing}">스몰왁싱</a>
+                    <a th:href="@{/view/smallwaxing}">스몰왁싱</a>
                     <ul class="gnb_depth2">
-                        <li><a th:href="@{/smallwaxing}">스몰왁싱 특별함</a> </li>
-                        <li><a th:href="@{/directions}">오시는 길</a> </li>
+                        <li><a th:href="@{/view/smallwaxing}">스몰왁싱 특별함</a> </li>
+                        <li><a th:href="@{/view/directions}">오시는 길</a> </li>
                     </ul>
                 </li>
                 <li>
-                    <a th:href="@{/brazilianwaxing}">서비스</a>
+                    <a th:href="@{/view/brazilianwaxing}">서비스</a>
                     <ul class="gnb_depth2">
-                        <li><a href="/brazilianwaxing">브라질리언왁싱</a> </li>
-                        <li><a href="/bodywaxing">바디왁싱</a> </li>
-                        <li><a href="/facewaxing">페이스왁싱</a> </li>
-                        <li><a href="/pregnantwaxing">임산부왁싱</a> </li>
+                        <li><a href="/view/brazilianwaxing">브라질리언왁싱</a> </li>
+                        <li><a href="/view/bodywaxing">바디왁싱</a> </li>
+                        <li><a href="/view/facewaxing">페이스왁싱</a> </li>
+                        <li><a href="/view/pregnantwaxing">임산부왁싱</a> </li>
                     </ul>
                 </li>
-                <li><a th:href="@{/price}">가격안내</a></li>
+                <li><a th:href="@{/view/price}">가격안내</a></li>
                 <li>
-                    <a th:href="@{/event}">커뮤니티</a>
+                    <a th:href="@{/view/event}">커뮤니티</a>
                     <ul class="gnb_depth2">
-                        <li><a th:href="@{/event}">이벤트</a> </li>
-                        <li><a th:href="@{/notice}">공지사항</a></li>
-                        <li><a th:href="@{/faq}">자주묻는질문</a></li>
+                        <li><a th:href="@{/view/event}">이벤트</a> </li>
+                        <li><a th:href="@{/view/notice}">공지사항</a></li>
+                        <li><a th:href="@{/view/faq}">자주묻는질문</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a th:href="@{/consultings}">온라인상담</a>
+                    <a th:href="@{/view/consultings}">온라인상담</a>
                     <ul class="gnb_depth2">
-                        <li><a th:href="@{/consultings}">온라인상담</a> </li>
-                        <li><a th:href="@{/kakatalk}">카톡상담</a></li>
+                        <li><a th:href="@{/view/consultings}">온라인상담</a> </li>
+                        <li><a th:href="@{/view/kakatalk}">카톡상담</a></li>
                     </ul>
                 </li>
             </ul>
 
 
+            <div class="auth-links">
+                <!-- 로그아웃 버튼: 자바스크립트로 동적으로 표시 -->
+                <button id="logoutButton" class="logout" style="display: none;">Logout</button>
+            </div>
 
             <!--        <a href="#" class="btn_gnb"></a>-->
             <button class="hamburger-menu" onclick="toggleMenu(this)" aria-label="Main Menu">
@@ -56,6 +60,7 @@
                     <path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
                 </svg>
             </button>
+
         </nav>
 
 
@@ -70,10 +75,10 @@
                     </li>
                     <li><a href="#">서비스</a>
                         <ul class="overlay-gnb-depth2">
-                            <li><a href="/brazlianwaxing">브라질리언왁싱</a> </li>
-                            <li><a href="/bodywaxing">바디왁싱</a> </li>
-                            <li><a href="/facewaxing">페이스왁싱</a> </li>
-                            <li><a href="/pregnantwaxing">임산부왁싱</a> </li>
+                            <li><a href="/view/brazlianwaxing">브라질리언왁싱</a> </li>
+                            <li><a href="/view/bodywaxing">바디왁싱</a> </li>
+                            <li><a href="/view/facewaxing">페이스왁싱</a> </li>
+                            <li><a href="/view/pregnantwaxing">임산부왁싱</a> </li>
                         </ul>
                     </li>
                     <li><a href="#">가격안내</a></li>
@@ -86,8 +91,8 @@
                     </li>
                     <li><a href="#">온라인상담</a>
                         <ul class="overlay-gnb-depth2">
-                            <li><a href="/rest">온라인상담</a> </li>
-                            <li><a href="/kakao">카톡상담</a> </li>
+                            <li><a href="/view/rest">온라인상담</a> </li>
+                            <li><a href="/view/kakao">카톡상담</a> </li>
                         </ul>
                     </li>
                 </ul>

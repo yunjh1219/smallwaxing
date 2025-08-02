@@ -19,7 +19,7 @@ public class ApiUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userNum) throws UsernameNotFoundException {
 		User user = userRepository.findByUserNum(userNum)
-			.orElseThrow(() -> new UsernameNotFoundException("일치하는 학번을 찾을 수 없습니다."));
+			.orElseThrow(() -> new UsernameNotFoundException("일치하는 아이디를 찾을 수 없습니다."));
 
 		return org.springframework.security.core.userdetails.User.builder()
 			.username(user.getUserNum())

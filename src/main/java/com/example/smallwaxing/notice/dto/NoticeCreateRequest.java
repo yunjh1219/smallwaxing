@@ -15,6 +15,7 @@ public class NoticeCreateRequest {
     private String title;
     @NotBlank(message = "내용을 입력해주세요")
     private String content;
+    private boolean isPinned; // 고정 여부 (선택값)
 
     public Notice toEntity(User user) {
 
@@ -23,6 +24,7 @@ public class NoticeCreateRequest {
                 .title(title)
                 .content(content)
                 .user(user)
+                .isPinned(this.isPinned)
                 .build();
 
     }
