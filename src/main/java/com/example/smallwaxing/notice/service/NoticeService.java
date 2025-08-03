@@ -5,11 +5,16 @@ import com.example.smallwaxing.notice.domain.Notice;
 import com.example.smallwaxing.global.error.exception.UserNotFoundException;
 import com.example.smallwaxing.notice.dto.NoticeCreateRequest;
 import com.example.smallwaxing.notice.dto.NoticeFindAllResponse;
+import com.example.smallwaxing.notice.dto.NoticePaging;
 import com.example.smallwaxing.notice.repository.NoticeRepository;
 import com.example.smallwaxing.user.domain.User;
 import com.example.smallwaxing.user.dto.LoginUser;
 import com.example.smallwaxing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +39,22 @@ public class NoticeService {
     }
 
     //전체 조회
-    public List<NoticeFindAllResponse> findAllNotice(){
-        return noticeRepository.findAllNotice();
+//    public List<NoticeFindAllResponse> findAllNotice(){
+//        return noticeRepository.findAllNotice();
+//    }
+
+    @Transactional(readOnly = true)
+    public Page<NoticeFindAllResponse> findAllNotices(NoticePaging noticePaging) {
+        Sort sort = Sort.by(Sort.Direction.fromString(noticePaging.getSort()), "id");
+        Pageable pageable = PageRequest.of(noticePaging.getPage(), noticePaging.getSize(), sort);
+
+        Page<Notice> noticePage = noticeRepository.findAll(pageable);
+        Page<NoticeFindAllResponse> noticeResponses = noticePage.map(NoticeFindAllResponse::new);
+
+        return noticeResponses;
     }
+
+
 
 }
 

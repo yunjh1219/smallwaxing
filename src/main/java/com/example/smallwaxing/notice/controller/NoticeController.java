@@ -4,10 +4,13 @@ import com.example.smallwaxing.global.common.SuccessResponse;
 import com.example.smallwaxing.global.security.Login;
 import com.example.smallwaxing.notice.dto.NoticeCreateRequest;
 import com.example.smallwaxing.notice.dto.NoticeFindAllResponse;
+import com.example.smallwaxing.notice.dto.NoticePaging;
+import com.example.smallwaxing.notice.dto.NoticeResponse;
 import com.example.smallwaxing.notice.service.NoticeService;
 import com.example.smallwaxing.user.dto.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +38,23 @@ public class NoticeController {
     //공지 전체 조회
     @GetMapping("/notice")
     @ResponseStatus(HttpStatus.OK)
-    public SuccessResponse<List<NoticeFindAllResponse>> findAllNotice() {
+    public SuccessResponse<Page<NoticeFindAllResponse>> findAllNotice(@ModelAttribute NoticePaging noticePaging) {
 
-        return SuccessResponse.<List<NoticeFindAllResponse>>builder()
+        return SuccessResponse.<Page<NoticeFindAllResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("공지 조회 성공")
-                .data(noticeService.findAllNotice())
+                .data(noticeService.findAllNotices(noticePaging))  // 바로 호출 결과 넣기 가능
                 .build();
     }
 
+    //공지 단건 조회
+    @GetMapping("/notice/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SuccessResponse<NoticeResponse> getNotice(@PathVariable Long id) {
+        return SuccessResponse.<NoticeResponse>builder()
+                .status(200)
+                .data(noticeService.findNotice(id))
+                .message("공지 단건 조회 성공")
+                .build();
+    }
 }

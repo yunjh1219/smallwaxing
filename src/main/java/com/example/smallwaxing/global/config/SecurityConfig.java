@@ -28,14 +28,15 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").authenticated()  // 로그아웃은 인증된 사용자만
                         .requestMatchers(
                                 "/",
                                 "/login",
                                 "/view/**",
                                 "/css/**",
                                 "/img/**",
-                                "/js/**"
+                                "/js/**",
+                                "/api/notice",
+                                "/favicon.ico"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

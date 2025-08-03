@@ -30,6 +30,8 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
                         notice.content,
                         notice.createdAt,
                         notice.updatedAt,
+                        notice.isPinned,
+                        notice.views,
                         notice.user.userName
                 ))
                 .from(notice)

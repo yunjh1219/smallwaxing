@@ -1,0 +1,40 @@
+.table-container {
+    width: 1000px; /* 원하는 테이블 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    border-top: 2px solid #c75e5e;
+}
+
+table {
+    width: 100%;
+    background-color: #ffffff;
+    border-collapse: collapse; /* 경계선 겹치기 */
+}
+
+
+tr {/* 각 테이블 행 아래에 연한 회색 테두리 선을 추가 */
+    border-bottom: 1px solid #8888;  /* #8888은 반투명한 회색 (rgba처럼 작동) */
+}
+
+th {/* 테이블 헤더(th)의 글자를 굵게, 색상은 어두운 회색으로 */
+    font-weight: bold;
+    color: #333;
+}
+
+td {/* 테이블 데이터 셀(td)에 위아래로 넉넉한 패딩을 줘서 높이 확보 */
+    padding: 25px;
+}
+
+tr:hover {/* 마우스 올렸을 때 행 전체의 배경색을 어두운 회색으로 변경 */
+    background-color: #f7f7f6;
+}
+
+tr:hover td[data-field="title"] {
+    color: #cf4d4d; /* 제목 글자색만 변경 */
+    cursor: pointer;
+}
+
+
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}

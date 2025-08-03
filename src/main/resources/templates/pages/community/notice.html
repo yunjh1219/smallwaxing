@@ -7,8 +7,8 @@
 <head>
   <title>main homepage</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/main.css}">
-  <script th:inline="javascript" type="text/javascript" th:src="@{/js/pages/main.js}"></script>
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/common/view-list.css}">
+  <script th:inline="javascript" type="text/javascript" th:src="@{/js/pages/community/notice.js}"></script>
 </head>
 
 <!-- 상단 이미지 영역 fragment -->
@@ -32,7 +32,21 @@
 
 <th:block layout:fragment="content">
   <div class="content">
-
+    <div class="table-container">
+      <table>
+        <colgroup>
+          <col style="width: 5%;" />
+          <col style="width: 70%;" />
+          <col style="width: 10%;" />
+          <col style="width: 15%;" />
+        </colgroup>
+        <tbody id="notice-list">
+        <!-- 자바스크립트가 여기에 tr 추가 -->
+        </tbody>
+      </table>
+      <div id="pagination"></div>
+    </div>
   </div>
 </th:block>
+
 </html>
