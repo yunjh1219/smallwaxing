@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>main homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/detail/detail-notice.css}">
+
+    <script th:inline="javascript" type="text/javascript" th:src="@{/js/pages/detail/detailNotice.js}"></script>
+</head>
+
+<!-- 상단 이미지 영역 fragment -->
+<section layout:fragment="section-top">
+    <div class="sec-image-container">
+        <div class="section-top-nimg">
+            <div class="sec-sub-nav">
+                <ul>
+                    <li><a href="/view/event">이벤트</a></li>
+                    <li class="active"><a href="/view/notice">공지사항</a></li>
+                    <li><a href="/view/faq">자주묻는질문</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="sec-info-container">
+        <h1 class="sec-info-title">공지사항</h1>
+        <p class="sec-info-desc">NOTICE</p>
+    </div>
+</section>
+
+<!-- 본문 content fragment -->
+<th:block layout:fragment="content">
+    <div class="content">
+        <div class="detail-table-container">
+            <div class="detail-table-info">
+                <h1 id="title"></h1>
+                <div class="info-item">
+                <div><i class="bi bi-person"></i><span id="writer"></span></div>
+                <div><i class="bi bi-clock"></i><span id="date"></span></div>
+                <div><i class="bi bi-eye"></i><span id="views"></span></div>
+                </div>
+            </div>
+            <div id="content"></div>
+        </div>
+    </div>
+</th:block>
+
+</html>

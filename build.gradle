@@ -64,3 +64,14 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+// generated sources 경로를 컴파일 소스 경로에 추가
+sourceSets {
+    main.java.srcDirs += 'build/generated/source/apt/main'
+}
+
+// compileJava 태스크에 annotationProcessorPath 지정
+compileJava {
+    options.annotationProcessorPath = configurations.annotationProcessor
+}

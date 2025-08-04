@@ -1,0 +1,33 @@
+.detail-table-container {
+    width: 1000px; /* 원하는 테이블 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.detail-table-info {
+    border-bottom: 2px solid #c75e5e;
+    gap: 20px; /* 각 정보 블록 간 간격 */
+    align-items: center;
+    padding: 10px 0;
+}
+
+.info-item {
+    display: flex;
+    gap: 16px; /* 각 아이템 간 간격 설정 */
+    margin-top: 5px; /* 제목과의 간격 */
+}
+
+.info-item > div {
+    display: flex;
+    align-items: center;
+}
+
+.detail-table-info i {
+    font-size: 15px;
+    margin-right: 5px;
+    color: #585858;
+}
+
+.detail-table-info span {
+    color: #585858;
+    font-size: 13px;
+}

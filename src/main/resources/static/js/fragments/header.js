@@ -24,3 +24,54 @@ function toggleMenu(button) {
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logoutButton");
+
+    const token = localStorage.getItem("jwtToken");
+
+    if (token) {
+        try {
+            const payloadBase64 = token.split('.')[1];
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+
+            const role = decodedPayload.role;
+
+            if (role === 'ADMIN' || role === 'USER') {
+                logoutButton.style.display = "inline-block";
+
+                logoutButton.addEventListener("click", function () {
+                    fetch("/api/logout", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // 토큰 삭제
+                                localStorage.removeItem("jwtToken");
+                                alert("로그아웃 성공");
+                                window.location.href = "/"; // 홈으로 리디렉션
+                            } else {
+                                alert("로그아웃 실패");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("로그아웃 중 오류 발생:", error);
+                            alert("서버 오류");
+                        });
+                });
+
+            } else {
+                logoutButton.style.display = "none";
+            }
+
+        } catch (error) {
+            console.error("JWT 디코딩 오류:", error);
+            logoutButton.style.display = "none";
+        }
+    } else {
+        logoutButton.style.display = "none";
+    }
+});

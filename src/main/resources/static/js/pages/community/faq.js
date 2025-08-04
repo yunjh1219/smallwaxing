@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 0; // 0부터 시작
     const pageSize = 15;
 
-    const list = document.getElementById("notice-list");
+    const list = document.getElementById("faq-list");
 
     // ✅ 제목 셀 클릭 시 단건 조회 이동 (이벤트 위임 방식)
     list.addEventListener("click", function (event) {
@@ -10,12 +10,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (target && target.getAttribute("data-field") === "title") {
             const row = target.closest("tr");
             const id = row.dataset.id;
-            window.location.href = `/view/notice/${id}`;
+            window.location.href = `/view/faq/${id}`;
         }
     });
 
-    function fetchNotices(page) {
-        fetch(`/api/notice?page=${page}&size=${pageSize}&sort=DESC`, {
+    function fetchFaq(page) {
+
+        const url = `/api/faq?page=${page}&size=${pageSize}&sort=DESC`;
+        console.log("Sending GET request to:", url);
+
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,17 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(responseData);
                 list.innerHTML = "";
 
-                const notices = responseData.data.content; // Page 객체의 content
-                notices.forEach((notice, index) => {
-                    const createdAtTime = new Date(notice.createdAt).toLocaleDateString();
+                const faq = responseData.data.content; // Page 객체의 content
+                faq.forEach((faq, index) => {
+                    const createdAtTime = new Date(faq.createdAt).toLocaleDateString();
 
                     const row = document.createElement('tr');
-                    row.dataset.id = notice.id;
+                    row.dataset.id = faq.id;
 
                     row.innerHTML = `
                         <td>${page * pageSize + index + 1}</td>
-                        <td data-field="title" style="cursor:pointer;">${notice.title}</td>
-                        <td data-field="name" style="text-align: left;">${notice.userName || '작성자 정보 없음'}</td>
+                        <td data-field="title" style="cursor:pointer;">${faq.title}</td>
+                        <td data-field="name" style="text-align: left;">${faq.userName || '작성자 정보 없음'}</td>
                         <td data-field="createdAt">${createdAtTime}</td>
                     `;
 
@@ -46,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderPagination(responseData.data);
             })
             .catch(error => {
-                console.error('공지 조회 실패:', error);
+                console.error('자주묻는질문 조회 실패:', error);
             });
     }
 
@@ -61,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const prevBtn = document.createElement("button");
         prevBtn.textContent = "<";
         prevBtn.disabled = currentPage === 0;
-        prevBtn.addEventListener("click", () => fetchNotices(currentPage - 1));
+        prevBtn.addEventListener("click", () => fetchFaq(currentPage - 1)); // fetchFaq로 수정
         pagination.appendChild(prevBtn);
 
         // 현재 페이지 (1부터 시작)
@@ -76,9 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextBtn = document.createElement("button");
         nextBtn.textContent = ">";
         nextBtn.disabled = currentPage >= totalPages - 1;
-        nextBtn.addEventListener("click", () => fetchNotices(currentPage + 1));
+        nextBtn.addEventListener("click", () => fetchFaq(currentPage + 1)); // fetchFaq로 수정
         pagination.appendChild(nextBtn);
     }
 
-    fetchNotices(currentPage); // 첫 로딩 시
+    fetchFaq(currentPage); // 첫 로딩 시 fetchFaq 호출
 });

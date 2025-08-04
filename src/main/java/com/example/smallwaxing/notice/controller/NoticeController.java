@@ -35,6 +35,18 @@ public class NoticeController {
                 .build();
     }
 
+    // 공지 삭제
+    @DeleteMapping("/notice/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public SuccessResponse<Void> deleteNotice(@Login LoginUser loginUser, @PathVariable Long id) {
+        noticeService.deleteNotice(loginUser, id); // 작성자 또는 ADMIN 권한 확인은 서비스에서 수행
+
+        return SuccessResponse.<Void>builder()
+                .status(HttpStatus.NO_CONTENT.value())
+                .message("공지 삭제 성공")
+                .build();
+    }
+
     //공지 전체 조회
     @GetMapping("/notice")
     @ResponseStatus(HttpStatus.OK)

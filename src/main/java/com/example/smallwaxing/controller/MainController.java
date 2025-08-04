@@ -19,6 +19,11 @@ public class MainController {
         return "pages/auth/login";
     }
 
+    @GetMapping("/write")
+    public String write(){
+        return "pages/write/write";
+    }
+
     //스몰왁싱 카테고리
     @GetMapping("/view/directions") //오시는 길
     public String directions(){
@@ -77,6 +82,11 @@ public class MainController {
     @GetMapping("/view/kakatalk") //카카오톡
     public String kakatalk(){
         return "pages/consultings/kakatalk";
+    }
+
+    @GetMapping("/view/notice/{id}")
+    public String detailNotice(){
+        return "pages/detail/detailNotice";
     }
 
 }

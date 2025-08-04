@@ -1,11 +1,13 @@
 package com.example.smallwaxing.notice.service;
 
 
+import com.example.smallwaxing.global.error.exception.NoticeNotFoundException;
 import com.example.smallwaxing.notice.domain.Notice;
 import com.example.smallwaxing.global.error.exception.UserNotFoundException;
 import com.example.smallwaxing.notice.dto.NoticeCreateRequest;
 import com.example.smallwaxing.notice.dto.NoticeFindAllResponse;
 import com.example.smallwaxing.notice.dto.NoticePaging;
+import com.example.smallwaxing.notice.dto.NoticeResponse;
 import com.example.smallwaxing.notice.repository.NoticeRepository;
 import com.example.smallwaxing.user.domain.User;
 import com.example.smallwaxing.user.dto.LoginUser;
@@ -37,12 +39,18 @@ public class NoticeService {
 
         noticeRepository.save(notice);
     }
+    //공지삭제
+    @Transactional
+    public void deleteNotice(LoginUser loginUser, Long id) {
+        User user = userRepository.findByUserNumAndRole(loginUser.getUserNum(), loginUser.getRole())
+                .orElseThrow(UserNotFoundException::new);
 
-    //전체 조회
-//    public List<NoticeFindAllResponse> findAllNotice(){
-//        return noticeRepository.findAllNotice();
-//    }
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(NoticeNotFoundException::new);
 
+        noticeRepository.delete(notice);
+    }
+    //공지 전체조회
     @Transactional(readOnly = true)
     public Page<NoticeFindAllResponse> findAllNotices(NoticePaging noticePaging) {
         Sort sort = Sort.by(Sort.Direction.fromString(noticePaging.getSort()), "id");
@@ -53,7 +61,12 @@ public class NoticeService {
 
         return noticeResponses;
     }
+    //공지 단건조회
+    public NoticeResponse findNotice(Long id) {
 
+        return noticeRepository.getNoticeById(id)
+                .orElseThrow(NoticeNotFoundException::new);
+    }
 
 
 }
