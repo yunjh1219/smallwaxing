@@ -1,14 +1,13 @@
 package com.example.smallwaxing.faq.service;
 
 import com.example.smallwaxing.faq.domain.Faq;
-import com.example.smallwaxing.faq.dto.FaqCreateRequest;
-import com.example.smallwaxing.faq.dto.FaqFindAllResponse;
-import com.example.smallwaxing.faq.dto.FaqPaging;
-import com.example.smallwaxing.faq.dto.FaqSearchCondition;
+import com.example.smallwaxing.faq.dto.*;
 import com.example.smallwaxing.faq.repository.FaqRepository;
 import com.example.smallwaxing.global.error.exception.FaqNotFoundException;
+import com.example.smallwaxing.global.error.exception.NoticeNotFoundException;
 import com.example.smallwaxing.global.error.exception.UserNotFoundException;
 
+import com.example.smallwaxing.notice.dto.NoticeResponse;
 import com.example.smallwaxing.user.domain.User;
 import com.example.smallwaxing.user.dto.LoginUser;
 import com.example.smallwaxing.user.repository.UserRepository;
@@ -48,6 +47,14 @@ public class FaqService {
 
         // FAQ 엔티티를 반환받는 것이 아니라 DTO를 직접 반환
         return faqRepository.findAllFaq(condition, pageable);
+    }
+
+    //공지 단건조회
+    @Transactional
+    public FaqResponse findFaq(Long id) {
+
+        return faqRepository.getFaqById(id)
+                .orElseThrow(FaqNotFoundException::new);
     }
 
 }

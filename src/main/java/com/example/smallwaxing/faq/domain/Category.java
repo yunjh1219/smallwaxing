@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Category {
-    RESERVATION("예약"),
-    SERVICE("서비스"),
+    RESERVATION("예약문의"),
+    SERVICE("서비스문의"),
     AVAILABLE("시술가능여부"),
     AFTERCARE("왁싱후관리");
 
@@ -17,9 +17,9 @@ public enum Category {
         if (koreanName == null) {
             return null;
         }
-        if (koreanName.equals("예약")) {
+        if (koreanName.equals("예약문의")) {
             return RESERVATION;
-        } else if (koreanName.equals("서비스")) {
+        } else if (koreanName.equals("서비스문의")) {
             return SERVICE;
         } else if (koreanName.equals("시술가능여부")) {
             return AVAILABLE;

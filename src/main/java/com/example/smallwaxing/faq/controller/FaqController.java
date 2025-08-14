@@ -1,13 +1,11 @@
 package com.example.smallwaxing.faq.controller;
 
-import com.example.smallwaxing.faq.dto.FaqCreateRequest;
-import com.example.smallwaxing.faq.dto.FaqFindAllResponse;
-import com.example.smallwaxing.faq.dto.FaqPaging;
-import com.example.smallwaxing.faq.dto.FaqSearchCondition;
+import com.example.smallwaxing.faq.dto.*;
 import com.example.smallwaxing.faq.service.FaqService;
 import com.example.smallwaxing.global.common.SuccessResponse;
 import com.example.smallwaxing.global.security.Login;
 
+import com.example.smallwaxing.notice.dto.NoticeResponse;
 import com.example.smallwaxing.user.dto.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +40,16 @@ public class FaqController {
                 .status(HttpStatus.OK.value())
                 .data(faqService.findAllFaq(faqPaging,cond))  // 바로 호출 결과 넣기 가능
                 .message("FAQ 조회 성공")
+                .build();
+    }
+
+    @GetMapping("/faq/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SuccessResponse<FaqResponse> getFaq(@PathVariable Long id){
+        return SuccessResponse.<FaqResponse>builder()
+                .status(200)
+                .data(faqService.findFaq(id))
+                .message("FAQ 단건 조회 성공")
                 .build();
     }
 

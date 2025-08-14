@@ -62,6 +62,7 @@ public class NoticeService {
         return noticeResponses;
     }
     //공지 단건조회
+    @Transactional
     public NoticeResponse findNotice(Long id) {
 
         return noticeRepository.getNoticeById(id)

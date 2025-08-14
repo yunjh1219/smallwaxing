@@ -2,6 +2,7 @@ package com.example.smallwaxing.faq.repository;
 
 import com.example.smallwaxing.faq.domain.Category;
 import com.example.smallwaxing.faq.dto.FaqFindAllResponse;
+import com.example.smallwaxing.faq.dto.FaqResponse;
 import com.example.smallwaxing.faq.dto.FaqSearchCondition;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.smallwaxing.faq.domain.QFaq.faq;
 
@@ -51,6 +53,21 @@ public class FaqRepositoryCustomImpl implements FaqRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public Optional<FaqResponse> getFaqById(Long id) {
+        FaqResponse fetchOne = queryFactory
+                .select(Projections.constructor(FaqResponse.class,
+                        faq.id,
+                        faq.content
+                ))
+                .from(faq)
+                .where(faq.id.eq(id))
+                .fetchOne();
+
+        return Optional.ofNullable(fetchOne);
+    }
+
 
     private BooleanExpression categoryEq(String category) {
         return category == null ? null : faq.category.eq(Category.of(category));

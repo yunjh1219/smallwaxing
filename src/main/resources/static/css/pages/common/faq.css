@@ -1,0 +1,24 @@
+/* 테이블 전체 레이아웃 재계산 줄이기(가능하면 적용) */
+#faq-table { table-layout: fixed; width: 100%; }
+
+.faq-detail > td { padding: 0; border: 0; }
+
+.faq-detail-content {
+    overflow: hidden;
+    max-height: 0;        /* 닫힘 기본값 */
+    opacity: 0;
+    transition: max-height 160ms cubic-bezier(.2,.9,.2,1), opacity 160ms ease-out;
+    will-change: max-height;
+    contain: layout;      /* 주변 레이아웃 영향 최소화 */
+}
+.faq-detail-content.open { opacity: 1; }
+
+/* 패딩/배경/보더는 내부 래퍼로 이동 → max-height만 애니메이션 */
+.faq-detail-inner {
+    padding: 25px 30px;          /* ⬅️ 패딩은 여기로 */
+    border-top: 1px solid #eee;
+    background: #FAF0E6;
+    white-space: pre-wrap;
+}
+
+.faq-title { cursor: pointer; }
