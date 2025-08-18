@@ -19,9 +19,9 @@ public class MainController {
         return "pages/auth/login";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/view/writeNotice")
     public String write(){
-        return "pages/write/write";
+        return "pages/write/writeNotice";
     }
 
     //스몰왁싱 카테고리

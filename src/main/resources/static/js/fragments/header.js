@@ -2,10 +2,13 @@
 // 스크롤 내릴 때 padding 제거되게 -----------------------------------------------------------------------------
 window.addEventListener('scroll', function() {
     const gnb = document.querySelector('.header'); // .gnb 요소 선택
+    const depth2 = document.querySelectorAll('.gnb_depth2');
     if (window.scrollY > 0) { // 스크롤이 0보다 클 경우
         gnb.classList.add('scrolled'); // 'scrolled' 클래스 추가
+        depth2.classList.add('scrolled');
     } else {
         gnb.classList.remove('scrolled'); // 'scrolled' 클래스 제거
+        depth2.classList.add('scrolled');
     }
 });
 

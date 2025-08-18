@@ -46,7 +46,6 @@
 /*-- 메인메뉴/서브메뉴 -------------------------------------*/
 /*-- 메인메뉴 --------------------------------------------*/
 .gnb_depth1 {
-
     display: flex; /* 가로로 정렬 */
     justify-content: center; /* 메뉴들을 수평 중앙에 위치 */
     align-items: center; /* 메뉴들을 수직 중앙에 위치 */
@@ -107,6 +106,11 @@
     padding: 15px;
     min-width: 180px; /* 최소 너비 설정 */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* 그림자 효과 */
+}
+
+/* header가 줄어들면 서브메뉴도 따라 올라가게 */
+.header.scrolled .gnb_depth2 {
+    top: 70px;   /* header 줄어든 높이에 맞춰 위치 조정 */
 }
 
 .gnb_depth2 li{

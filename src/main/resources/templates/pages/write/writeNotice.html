@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default_layout}">
+<head>
+  <title>main homepage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/common/view-list.css}">
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/pages/write/writeCommon.css}">
+  <script th:inline="javascript" type="text/javascript" th:src="@{/js/pages/write/writeNotice.js}"></script>
+</head>
+
+<!-- 상단 이미지 영역 fragment -->
+<section layout:fragment="section-top">
+  <div class="sec-image-container">
+    <div class="section-top-nimg">
+      <div class="sec-sub-nav">
+        <ul>
+          <li><a href="/view/event">이벤트</a></li>
+          <li class="active"><a href="/view/notice">공지사항</a></li>
+          <li><a href="/view/faq">자주묻는질문</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="sec-info-container">
+    <h1 class="sec-info-title">공지사항</h1>
+    <p class="sec-info-desc">NOTICE</p>
+  </div>
+</section>
+
+<th:block layout:fragment="content">
+  <div class="content">
+    <div class="post-body">
+      <div class="form-box">
+        <div class="noticeWriteForm">
+          <!-- ✅ 백엔드는 /notice 로 JSON 받음 -->
+          <form th:action="@{/notice}"
+                method="post"
+                id="noticeWriteForm"
+                enctype="multipart/form-data">
+
+            <div class="noticewrite-container"><!-- 클래스명도 notice 로 변경 -->
+              <div class="input-group">
+                <div class="input-item">
+                  <label for="noticeTitle">제목</label>
+                  <input type="text" id="noticeTitle" name="title"
+                         placeholder="공지 제목을 입력하세요"
+                         th:value="${notice != null} ? ${notice.title} : ''" required>
+                  <!-- 더 깔끔하게: th:value="${notice != null} ? notice.title : ''" -->
+                </div>
+              </div>
+              <div class="input-group">
+                <div class="input-item">
+                  <label>
+                    <input type="checkbox" id="pinned" name="pinned"
+                           th:checked="${notice != null} ? ${notice.pinned} : false">
+                    상단 고정
+                  </label>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="input-item">
+                  <label for="noticeContent">내용</label>
+                  <textarea id="noticeContent" name="content"
+                            placeholder="본문 이미지 크기(width:1200, height: 상관없음)"
+                            th:text="${notice != null} ? ${notice.content} : ''"></textarea>
+                  <!-- 권장: th:text="${notice != null} ? notice.content : ''" -->
+                </div>
+              </div>
+
+              <!-- 📎 파일 UI는 유지(서버 전송 안 함) -->
+              <div class="input-group">
+                <div class="input-item">
+                  <label>파일첨부</label>
+                  <input type="text" id="imageInput" placeholder="최대 3개까지 업로드 가능합니다." readonly>
+                  <label for="image" class="file-upload-label">파일 첨부</label>
+                  <input type="file" id="image" name="image" accept="image/*" multiple style="display: none;">
+                  <p id="file-warning" style="color: red; display: none;"></p>
+                </div>
+                <div class="input-item">
+                  <label></label>
+                  <div id="fileList" class="file-list"></div>
+                </div>
+              </div>
+
+              <div class="input-item submit-button-wrapper">
+                <button type="submit" class="submit-button" id="submit-button"
+                        th:text="${notice == null} ? '등록하기' : '수정하기'"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+</html>

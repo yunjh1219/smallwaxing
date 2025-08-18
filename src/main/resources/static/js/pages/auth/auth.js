@@ -71,8 +71,6 @@ function logout() {
     fetch('/api/logout', {
         method: 'POST',
         headers: {
-
-
             'Content-Type': 'application/json',
             'Authorization': `${token}`  // JWT 토큰을 Authorization 헤더에 추가
         },
