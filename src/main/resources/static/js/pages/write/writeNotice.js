@@ -1,20 +1,19 @@
+//공지 작성
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('noticeWriteForm');
 
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const title = (document.getElementById('noticeTitle').value || '').trim();
-        const content = (document.getElementById('noticeContent').value || '').trim();
+        const noticeTitle = (document.getElementById('noticeTitle').value || '').trim();
+        const noticeContent = (document.getElementById('noticeContent').value || '').trim();
         const isPinned = document.getElementById('pinned')?.checked === true;
 
-        if (!title) {
-            alert('제목은 필수입니다.');
-            document.getElementById('noticeTitle').focus();
-            return;
-        }
-
-        const writeNoticeData = { title, content, isPinned };
+        const NoticeData = {
+            title: noticeTitle,
+            content: noticeContent,
+            isPinned: isPinned
+        };
 
         // ✅ 로컬스토리지에서 JWT 꺼내오기
         const token = localStorage.getItem('jwtToken');
@@ -23,25 +22,21 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify(writeNoticeData)
+            body: JSON.stringify(NoticeData)
         })
             .then(response => {
-                // ✅ 서버에서 JSON 내려주므로 그대로 파싱
-                return response.json();
-            })
-            .then(data => {
-                if (data.status === 201) {   // 서버에서 HttpStatus.CREATED.value() == 201
-                    alert('공지 작성 성공하였습니다.');
+                if (response.ok) {
+                    alert('새로운 공지사항이 성공적으로 저장되었습니다.');
                     window.location.href = '/view/notice';
                 } else {
-                    alert('공지 작성 실패하였습니다.');
+                    throw new Error('저장 중 오류가 발생했습니다.');
                 }
             })
             .catch(error => {
-                console.error('공지 작성 중 오류 발생:', error);
-                alert('서버와의 연결에 실패했습니다. 나중에 다시 시도해주세요.');
+                console.error('Error:', error);
+                alert('공지사항 정보를 저장하는 중 오류가 발생했습니다.');
             });
     });
 });

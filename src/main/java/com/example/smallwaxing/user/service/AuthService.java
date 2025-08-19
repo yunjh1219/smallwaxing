@@ -1,8 +1,10 @@
 package com.example.smallwaxing.user.service;
 
 import com.example.smallwaxing.global.error.exception.InvalidSigningInformation;
+import com.example.smallwaxing.global.error.exception.InvalidTokenException;
 import com.example.smallwaxing.global.error.exception.UserNotFoundException;
 import com.example.smallwaxing.global.security.JwtProvider;
+import com.example.smallwaxing.global.security.RefreshToken;
 import com.example.smallwaxing.global.security.Token;
 import com.example.smallwaxing.user.domain.User;
 import com.example.smallwaxing.user.dto.LoginRequestDto;
@@ -50,6 +52,24 @@ public class AuthService {
                 .orElseThrow(UserNotFoundException::new);
 
         user.invalidateRefreshToken();
+    }
+
+    //토큰 재발급
+    @Transactional
+    public Token reissue(RefreshToken refreshToken) {
+        String refreshTokenValue = refreshToken.getData();
+
+        if (!jwtProvider.isTokenValid(refreshTokenValue)) {
+            throw new InvalidTokenException();
+        }
+
+        User user = userRepository.findByRefreshToken(refreshTokenValue)
+                .orElseThrow(UserNotFoundException::new);
+        Token token = jwtProvider.createToken(user.getUserNum(), user.getRole());
+
+        user.updateRefreshToken(token.getRefreshToken().getData());
+
+        return token;
     }
 
 }

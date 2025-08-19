@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     //로그아웃
-    @PostMapping("/api/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     public SuccessResponse<Void> logout(@Login LoginUser loginUser, HttpServletResponse response) {
         authService.logout(loginUser);
@@ -51,10 +51,24 @@ public class AuthController {
                 .build();
     }
 
+    //토큰 재발급
+    @PostMapping("/reissue")
+    @ResponseStatus(HttpStatus.OK)
+    public SuccessResponse<Void> reissueToken(RefreshToken refreshToken, HttpServletResponse response) {
+        Token token = authService.reissue(refreshToken);
+
+        setAccessToken(response, token.getAccessToken());
+        setRefreshToken(response, token.getRefreshToken());
+
+        return SuccessResponse.<Void>builder()
+                .status(200)
+                .message("토큰 재발급 성공")
+                .build();
+    }
 
 
     private void setAccessToken(HttpServletResponse response, AccessToken accessToken) {
-        setHeader(response, accessToken.getHeader(), accessToken.getData());
+        response.setHeader(accessToken.getHeader(), "Bearer " + accessToken.getData());
     }
 
     //리프레쉬 토큰 쿠키에 저장
@@ -62,10 +76,9 @@ public class AuthController {
         Cookie cookie = createCookie(refreshToken.getHeader(), refreshToken.getData());
         response.addCookie(cookie);
     }
+
     private Cookie createCookie(String name, String value) {
         Cookie cookie = new Cookie(name, value);
-        cookie.setHttpOnly(true);              // 자바스크립트 접근 차단 (XSS 방지)
-        cookie.setSecure(true);                // HTTPS에서만 전송 (MITM 방지)
         cookie.setPath("/");
         cookie.setMaxAge(RefreshToken.EXPIRATION_PERIOD);
         cookie.setHttpOnly(true);
@@ -79,6 +92,7 @@ public class AuthController {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
+
     private void setHeader(HttpServletResponse response, String header, String data) {
         response.setHeader(header, data);
     }

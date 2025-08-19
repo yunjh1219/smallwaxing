@@ -48,51 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-//로그아웃
-function isLoggedIn() {
-    const token = localStorage.getItem("jwtToken");
-    if (!token) return false;
-
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const now = Math.floor(Date.now() / 1000);
-        return payload.exp > now;
-    } catch (e) {
-        return false;
-    }
-}
-
-function logout() {
-
-    // 로컬 스토리지에서 JWT 토큰 가져오기
-    const token = localStorage.getItem('jwtToken');
-
-    fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${token}`  // JWT 토큰을 Authorization 헤더에 추가
-        },
-        credentials: 'same-origin', // 쿠키 포함
-    })
-        .then(response => {
-            if (response.ok) {
-                // 로그아웃 성공 시 처리 (예: 로그인 페이지로 리디렉션)
-                alert('로그아웃 성공');
-                localStorage.removeItem('jwtToken');
-                window.location.href = '/'; // 로그인 페이지로 리디렉션
-                // 로컬 스토리지에서 JWT 토큰 삭제
-            } else {
-                // 로그아웃 실패 시 처리
-                alert('로그아웃 실패');
-            }
-        })
-        .catch(error => {
-            alert('로그아웃 중 오류 발생');
-        });
-}
-
 document.addEventListener("DOMContentLoaded", function() {
     if (isLoggedIn()) {
         const logoutButton = document.getElementById("logoutButton");
