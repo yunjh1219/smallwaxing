@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -41,6 +40,10 @@ public class AuthService {
         Token token = jwtProvider.createToken(user.getUserNum(), user.getRole());
 
         user.updateRefreshToken(token.getRefreshToken().getData());
+
+        System.out.println("✅ 로그인 성공 : userNum=" + user.getUserNum()
+                + ", role=" + user.getRole()
+                + ", accessToken=" + token.getAccessToken().getData());
 
         return token;
     }
@@ -68,7 +71,7 @@ public class AuthService {
         Token token = jwtProvider.createToken(user.getUserNum(), user.getRole());
 
         user.updateRefreshToken(token.getRefreshToken().getData());
-
+        System.out.println("✅ 토큰 재발급 성공 : " + token.getAccessToken().getData());
         return token;
     }
 
