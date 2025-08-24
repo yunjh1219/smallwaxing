@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     //토큰 재발급
-    @PostMapping("/reissue")
+    @PostMapping("/api/reissue")
     @ResponseStatus(HttpStatus.OK)
     public SuccessResponse<Void> reissueToken(RefreshToken refreshToken, HttpServletResponse response) {
         Token token = authService.reissue(refreshToken);

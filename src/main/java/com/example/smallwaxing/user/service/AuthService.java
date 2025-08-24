@@ -71,7 +71,8 @@ public class AuthService {
         Token token = jwtProvider.createToken(user.getUserNum(), user.getRole());
 
         user.updateRefreshToken(token.getRefreshToken().getData());
-        System.out.println("✅ 토큰 재발급 성공 : " + token.getAccessToken().getData());
+        System.out.println("✅ 액세스 토큰 재발급 성공 : " + token.getAccessToken().getData());
+        System.out.println("✅ 리프레쉬 토큰 재발급 성공 : " + token.getRefreshToken().getData());
         return token;
     }
 
