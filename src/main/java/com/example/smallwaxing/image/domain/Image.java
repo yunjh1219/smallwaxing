@@ -13,18 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notice_id")
-    private Notice notice;
+    private String filename;
+    private String filepath;
 
-    private String filename; // 실제 파일명 혹은 저장명
-    private String filepath; // 저장 경로
-    private LocalDateTime uploadedAt;
-
-    // 필요 시 이미지 유형, 용량 등 추가 가능
+    private String targetType; // "NOTICE", "EVENT", "REVIEW" 등
+    private Long targetId;     // 연결된 엔티티의 PK
 }

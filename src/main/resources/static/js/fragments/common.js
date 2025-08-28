@@ -24,6 +24,7 @@ function reissueToken() {
 }
 
 // 25분(1500초)마다 실행
+// 리프레시 토큰 재발급을 유지?
 setInterval(reissueToken, 1500000);
 
 
