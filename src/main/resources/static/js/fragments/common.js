@@ -1,30 +1,33 @@
-function reissueToken() {
-    const token = localStorage.getItem('jwtToken');  // 로컬 스토리지에서 JWT 토큰 가져오기
+async function fetchWithAuth(url, options = {}) {
+    const token = localStorage.getItem("jwtToken");
+    if (!options.headers) {
+        options.headers = {};
+    }
+    options.headers["Authorization"] = `Bearer ${token}`;
 
-    if (!token) {
-        console.error('토큰이 없습니다. 로그인 후 다시 시도해주세요.');
-        return;
+    let response = await fetch(url, options);
+
+    // 액세스 토큰 만료 → 401
+    if (response.status === 401) {
+        console.warn("토큰 만료 → 재발급 시도");
+
+        // 1. 리프레시 토큰으로 재발급 요청
+        const reissueResponse = await fetch("/api/reissue", { method: "POST" });
+        if (reissueResponse.ok) {
+            // 2. 새 액세스 토큰을 응답 헤더에서 추출
+            const newToken = reissueResponse.headers.get("Authorization")?.replace("Bearer ", "");
+            if (newToken) {
+                localStorage.setItem("jwtToken", newToken);
+
+                // 3. 다시 요청 (retry)
+                options.headers["Authorization"] = `Bearer ${newToken}`;
+                response = await fetch(url, options);
+            }
+        } else {
+            // 리프레시 토큰도 만료 → 로그인 페이지로
+            window.location.href = "/login";
+        }
     }
 
-    fetch('/api/reissue', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 포함
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('토큰 재발급 성공');
-            } else {
-                console.error('토큰 재발급 실패');
-            }
-        })
-        .catch(err => console.error('네트워크 오류:', err));
+    return response;
 }
-
-// 25분(1500초)마다 실행
-// 리프레시 토큰 재발급을 유지?
-setInterval(reissueToken, 1500000);
-
-

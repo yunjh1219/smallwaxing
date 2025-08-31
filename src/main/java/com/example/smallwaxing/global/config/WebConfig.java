@@ -5,6 +5,7 @@ import com.example.smallwaxing.global.util.RefreshTokenArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")  // 클라이언트의 URL
+                .allowedOrigins("http://localhost:8080") // 클라이언트 도메인
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
     }
@@ -26,5 +27,15 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(new LoginUserArgumentResolver());
     }
 
-
+    /**
+     * 🔹 업로드한 파일을 정적 리소스로 제공
+     * 예) C:/Project/smallwaxing/uploads/notice/a.png
+     *  → http://localhost:8080/uploads/notice/a.png
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String uploadPath = System.getProperty("user.dir") + "/uploads/";
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + uploadPath);
+    }
 }

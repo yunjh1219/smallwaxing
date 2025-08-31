@@ -1,10 +1,11 @@
 package com.example.smallwaxing.notice.repository;
 
 
+import com.example.smallwaxing.image.domain.Image;
+import com.example.smallwaxing.notice.domain.Notice;
 import com.example.smallwaxing.notice.dto.NoticeFindAllResponse;
 import com.example.smallwaxing.notice.dto.NoticeResponse;
 import com.example.smallwaxing.notice.dto.QNoticeFindAllResponse;
-import com.example.smallwaxing.notice.dto.QNoticeResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -43,21 +44,35 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
     }
 
     @Override
-    public Optional<NoticeResponse> getNoticeById(Long id){
-        NoticeResponse fetchOne = queryFactory.select(new QNoticeResponse(
-                        notice.id,
-                        notice.title,
-                        notice.content,
-                        notice.createdAt,
-                        notice.updatedAt,
-                        notice.user.userName,
-                        notice.views
-                ))
-                .from(notice)
+    public Optional<NoticeResponse> getNoticeById(Long id) {
+        Notice noticeEntity = queryFactory
+                .selectFrom(notice)
+                .leftJoin(notice.images).fetchJoin()
+                .leftJoin(notice.user).fetchJoin()
                 .where(notice.id.eq(id))
                 .fetchOne();
 
-        return Optional.ofNullable(fetchOne);
+        if (noticeEntity == null) {
+            return Optional.empty();
+        }
+
+        List<String> imageUrls = noticeEntity.getImages().stream()
+                .map(Image::getFilePath) // ✅ filePath 사용
+                .toList();
+
+        NoticeResponse response = NoticeResponse.builder()
+                .id(noticeEntity.getId())
+                .title(noticeEntity.getTitle())
+                .content(noticeEntity.getContent())
+                .createdAt(noticeEntity.getCreatedAt())
+                .updatedAt(noticeEntity.getUpdatedAt())
+                .userName(noticeEntity.getUser().getUserName())
+                .views(noticeEntity.getViews())
+                .imageUrls(imageUrls)
+                .build();
+
+        return Optional.of(response);
     }
+
 
 }

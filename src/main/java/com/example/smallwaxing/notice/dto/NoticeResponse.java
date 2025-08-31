@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,10 +20,12 @@ public class NoticeResponse {
     private String userName; // 유저 이름
     private int views = 0; //조회수
 
+    // ✅ 이미지 경로 리스트 추가
+    private List<String> imageUrls;
 
     @Builder
     @QueryProjection
-    public NoticeResponse(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, String userName, int views) {
+    public NoticeResponse(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, String userName, int views, List<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -30,6 +33,7 @@ public class NoticeResponse {
         this.updatedAt = updatedAt;
         this.userName = userName;
         this.views = views;
+        this.imageUrls = imageUrls;
     }
 
 

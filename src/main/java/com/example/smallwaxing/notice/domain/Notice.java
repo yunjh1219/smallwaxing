@@ -4,10 +4,7 @@ import com.example.smallwaxing.image.domain.Image;
 import com.example.smallwaxing.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,6 +57,17 @@ public class Notice {
         this.title = title;
         this.content = content;
         this.isPinned = isPinned;
+    }
+
+    /** 🔹 편의 메서드 추가 */
+    public void addImage(Image image) {
+        images.add(image);
+        image.setNotice(this); // 양방향 관계 동기화
+    }
+
+    public void removeImage(Image image) {
+        images.remove(image);
+        image.setNotice(null); // 관계 끊기
     }
 
 }

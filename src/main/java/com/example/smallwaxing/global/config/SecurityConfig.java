@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/logout",
+                                "/uploads/**",
                                 "/reissue",
                                 "/view/**",
                                 "/css/**",

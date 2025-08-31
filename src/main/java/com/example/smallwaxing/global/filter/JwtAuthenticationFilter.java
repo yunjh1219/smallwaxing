@@ -24,8 +24,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String bearerToken = request.getHeader("Authorization");
 
-        if (bearerToken == null || !jwtProvider.isTokenValid(bearerToken.replace("Bearer ", ""))) {
-            filterChain.doFilter(request, response);
+        if (bearerToken == null) {
+            filterChain.doFilter(request, response); // 로그인 안 한 사용자 → 그냥 통과
+            return;
+        }
+        if (!jwtProvider.isTokenValid(bearerToken.replace("Bearer ", ""))) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"status\":401, \"message\":\"토큰이 유효하지 않거나 만료되었습니다.\"}");
             return;
         }
 

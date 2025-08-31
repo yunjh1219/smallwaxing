@@ -49,11 +49,36 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+    const logoutButton = document.getElementById("logoutButton");
+    const loginButton = document.getElementById("loginButton");
+
     if (isLoggedIn()) {
-        const logoutButton = document.getElementById("logoutButton");
+        // 로그인 상태 → 로그아웃 버튼만 보임
         if (logoutButton) {
             logoutButton.style.display = "block";
             logoutButton.addEventListener("click", logout);
         }
+        if (loginButton) loginButton.style.display = "none";
+
+    } else {
+        // 비로그인 상태 → 로그인 버튼만 보임
+        if (logoutButton) logoutButton.style.display = "none";
+        if (loginButton) loginButton.style.display = "block";
     }
 });
+
+
+function isLoggedIn() {
+    const token = localStorage.getItem("jwtToken");
+    if (!token) return false;
+
+    try {
+        // JWT payload 디코딩
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const exp = payload.exp * 1000; // 초 → 밀리초 변환
+        return Date.now() < exp; // 만료 전이면 true
+    } catch (e) {
+        console.error("토큰 파싱 오류:", e);
+        return false;
+    }
+}

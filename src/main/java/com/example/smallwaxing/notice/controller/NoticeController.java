@@ -10,12 +10,15 @@ import com.example.smallwaxing.notice.service.NoticeService;
 import com.example.smallwaxing.user.dto.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor //final 필드나 @NonNull이 붙은 필드에 대해 생성자를 자동으로 생성해주는 기능
 @RequestMapping("/api") // 올바른 위치
@@ -23,9 +26,15 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    @PostMapping("/notice")
+    @PostMapping(value = "/notice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public SuccessResponse<Void> createNotice(@Login LoginUser loginUser, @RequestBody @Valid NoticeCreateRequest createDto){
+    public SuccessResponse<Void> createNotice(@Login LoginUser loginUser,
+                                              @ModelAttribute @Valid NoticeCreateRequest createDto){
+
+        log.info("제목: {}", createDto.getTitle());
+        log.info("내용: {}", createDto.getContent());
+        log.info("상단 고정 여부: {}", createDto.isPinned());
+        log.info("첨부 파일 개수: {}", createDto.getImages() != null ? createDto.getImages().size() : 0);
 
         noticeService.createNotice(loginUser, createDto);
 

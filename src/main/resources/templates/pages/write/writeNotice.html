@@ -36,27 +36,27 @@
     <div class="post-body">
       <div class="form-box">
         <div class="noticeWriteForm">
-          <!-- ✅ 백엔드는 /notice 로 JSON 받음 -->
+          <!-- ✅ 백엔드는 multipart/form-data 받음 -->
           <form th:action="@{/notice}"
                 method="post"
                 id="noticeWriteForm"
                 enctype="multipart/form-data">
 
-            <div class="noticewrite-container"><!-- 클래스명도 notice 로 변경 -->
+            <div class="noticewrite-container">
               <div class="input-group">
                 <div class="input-item">
                   <label for="noticeTitle">제목</label>
                   <input type="text" id="noticeTitle" name="title"
                          placeholder="공지 제목을 입력하세요"
                          th:value="${notice != null} ? ${notice.title} : ''" required>
-                  <!-- 더 깔끔하게: th:value="${notice != null} ? notice.title : ''" -->
                 </div>
               </div>
+
               <div class="input-group">
                 <div class="input-item">
                   <label>
-                    <input type="checkbox" id="pinned" name="pinned"
-                           th:checked="${notice != null} ? ${notice.pinned} : false">
+                    <input type="checkbox" id="pinned" name="isPinned"
+                           th:checked="${notice != null} ? ${notice.isPinned} : false">
                     상단 고정
                   </label>
                 </div>
@@ -68,17 +68,16 @@
                   <textarea id="noticeContent" name="content"
                             placeholder="본문 이미지 크기(width:1200, height: 상관없음)"
                             th:text="${notice != null} ? ${notice.content} : ''"></textarea>
-                  <!-- 권장: th:text="${notice != null} ? notice.content : ''" -->
                 </div>
               </div>
 
-              <!-- 📎 파일 UI는 유지(서버 전송 안 함) -->
+              <!-- 📎 파일 업로드 -->
               <div class="input-group">
                 <div class="input-item">
                   <label>파일첨부</label>
                   <input type="text" id="imageInput" placeholder="최대 3개까지 업로드 가능합니다." readonly>
                   <label for="image" class="file-upload-label">파일 첨부</label>
-                  <input type="file" id="image" name="image" accept="image/*" multiple style="display: none;">
+                  <input type="file" id="image" name="images" accept="image/*" multiple style="display: none;">
                   <p id="file-warning" style="color: red; display: none;"></p>
                 </div>
                 <div class="input-item">

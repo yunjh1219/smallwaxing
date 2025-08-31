@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 logoutButton.style.display = "inline-block";
 
                 logoutButton.addEventListener("click", function () {
-                    fetch("/logout", {
+                    fetchWithAuth("/logout", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
