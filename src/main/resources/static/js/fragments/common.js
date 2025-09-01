@@ -24,6 +24,10 @@ async function fetchWithAuth(url, options = {}) {
                 response = await fetch(url, options);
             }
         } else {
+
+            // 리프레시 토큰 만료 → 토큰 제거 + 로그인 페이지 이동
+            localStorage.removeItem("jwtToken");
+
             // 리프레시 토큰도 만료 → 로그인 페이지로
             window.location.href = "/login";
         }

@@ -43,21 +43,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 logoutButton.style.display = "inline-block";
 
                 logoutButton.addEventListener("click", function () {
-                    fetchWithAuth("/logout", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        }
-                    })
+                    fetchWithAuth("/logout", {method: "POST"})
                         .then(response => {
                             if (response.ok) {
                                 // 토큰 삭제
                                 localStorage.removeItem("jwtToken");
                                 alert("로그아웃 성공");
                                 window.location.href = "/"; // 홈으로 리디렉션
-                            } else {
-                                alert("로그아웃 실패");
                             }
                         })
                         .catch(error => {
