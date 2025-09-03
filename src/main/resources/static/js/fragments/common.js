@@ -30,6 +30,7 @@ async function fetchWithAuth(url, options = {}) {
 
             // 리프레시 토큰도 만료 → 로그인 페이지로
             window.location.href = "/login";
+            //수정
         }
     }
 
