@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .catch(err => {
-
             console.error("공지 단건 조회 실패:", err);
         });
 

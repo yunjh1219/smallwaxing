@@ -83,19 +83,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // 선택된 파일 배열에서 추가
         selectedFiles.forEach(file => formData.append("images", file));
 
-        console.log("=== 전송할 FormData 값 ===");
-        for (let [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                console.log(key, `${value.name} (${(value.size / 1024).toFixed(1)}KB)`);
-            } else {
-                console.log(key, value);
-            }
-        }
 
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch('/api/notice', {
+            const response = await fetchWithAuth('/api/notice', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

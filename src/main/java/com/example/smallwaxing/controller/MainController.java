@@ -19,7 +19,8 @@ public class MainController {
         return "pages/auth/login";
     }
 
-    @GetMapping("/view/writeNotice")
+    //글 작성 이동
+    @GetMapping("/view/write/notice")
     public String write(){
         return "pages/write/writeNotice";
     }

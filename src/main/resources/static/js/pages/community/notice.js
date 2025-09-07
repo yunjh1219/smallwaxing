@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(responseData => {
-                console.log(responseData);
                 list.innerHTML = "";
 
                 const notices = responseData.data.content; // Page 객체의 content
@@ -83,34 +82,4 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchNotices(currentPage); // 첫 로딩 시
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const noticeWriteBtn = document.getElementById("notice-write-btn");
-    if (!noticeWriteBtn) return;
 
-    const token = localStorage.getItem("jwtToken");
-
-    if (token) {
-        try {
-            const payloadBase64 = token.split('.')[1];
-            const decodedPayload = JSON.parse(atob(payloadBase64));
-
-            const role = decodedPayload.role;
-
-            if (role === 'ADMIN') {
-                noticeWriteBtn.style.display = "inline-block";
-
-                // ✅ 클릭 시 작성 페이지로 이동만 하면 됨
-                noticeWriteBtn.addEventListener("click", function () {
-                    window.location.href = "/view/writeNotice";
-                });
-
-            } else {
-                noticeWriteBtn.style.display = "none";
-            }
-        } catch (error) {
-            noticeWriteBtn.style.display = "none";
-        }
-    } else {
-        writeBtn.style.display = "none";
-    }
-});
