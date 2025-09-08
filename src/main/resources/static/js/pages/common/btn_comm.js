@@ -25,15 +25,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+const resData = getResourceFromUrl(); // switch 밖에서 선언
+
 function handleAdminAction(action) {
-    const resData = getResourceFromUrl(); // switch 밖에서 선언
 
     switch (action) {
         //작성 페이지 이동
-        case "write":
+        case "compose":
             if (!resData) return alert("이동할 페이지를 찾을 수 없습니다.");
             window.location.href = `/view/write/${resData.resource}`;
             break;
+
+
+        // 수정도 같은 페이지로 이동 (id 포함)
+        case "update":
+            if (!resData) return alert("이동할 페이지를 찾을 수 없습니다.");
+            window.location.href = `/view/write/${resData.resource}?id=${resData.id}`;
+            break;
+
+
 
         //삭제
         case "delete":

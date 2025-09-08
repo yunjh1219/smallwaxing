@@ -1,21 +1,45 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const form = document.getElementById('noticeWriteForm');
     const fileInput = document.getElementById('image');
     const fileListContainer = document.getElementById('fileList');
     const fileWarning = document.getElementById('file-warning');
-
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("id"); // 수정 모드 체크
     const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-    let selectedFiles = []; // ✅ 선택된 파일들을 따로 저장
+    let selectedFiles = [];
 
-    // 파일 선택 시
+    // 수정 모드일 때 기존 데이터 불러오기
+    if (id) {
+        try {
+            const res = await fetchWithAuth(`/api/notice/${id}`);
+            if (!res.ok) throw new Error("데이터 조회 실패");
+            const data = await res.json();
+
+            // 입력값 채우기
+            document.getElementById("title").value = data.title;
+            document.getElementById("content").value = data.content;
+            document.getElementById("pinned").checked = data.isPinned;
+
+            // 서버에 저장된 파일도 목록에 표시 (삭제 불가 예시)
+            if (data.images && data.images.length > 0) {
+                data.images.forEach(img => {
+                    const item = document.createElement("div");
+                    item.textContent = `📎 ${img}`;
+                    fileListContainer.appendChild(item);
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            alert("데이터 불러오기 실패: " + err.message);
+        }
+    }
+
+    // 파일 선택
     fileInput.addEventListener("change", function () {
         const newFiles = Array.from(fileInput.files);
-
-        // 새로 선택한 파일을 기존 selectedFiles에 추가
         newFiles.forEach(file => {
             const ext = file.name.split(".").pop().toLowerCase();
 
-            // 파일 검증
             if (file.size > 10 * 1024 * 1024) {
                 fileWarning.textContent = `⚠ ${file.name}은(는) 10MB를 초과합니다.`;
                 fileWarning.style.display = "block";
@@ -27,24 +51,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // 중복 방지 (같은 이름 파일 두 번 추가 안 되게)
             if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
                 selectedFiles.push(file);
             }
         });
 
-        // 최대 3개 제한
         if (selectedFiles.length > 3) {
             fileWarning.textContent = "⚠ 최대 3개까지 업로드할 수 있습니다.";
             fileWarning.style.display = "block";
-            selectedFiles = selectedFiles.slice(0, 3); // 앞 3개만 유지
+            selectedFiles = selectedFiles.slice(0, 3);
         } else {
             fileWarning.style.display = "none";
         }
 
-        // 목록 갱신
         renderFileList();
-        fileInput.value = ""; // input 비워줘야 다시 선택 가능
+        fileInput.value = "";
     });
 
     // 파일 목록 렌더링
@@ -54,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const item = document.createElement("div");
             item.textContent = `${index + 1}. ${file.name} (${(file.size / 1024).toFixed(1)}KB)`;
 
-            // 삭제 버튼
             const removeBtn = document.createElement("button");
             removeBtn.textContent = "❌";
             removeBtn.style.marginLeft = "10px";
@@ -67,37 +87,30 @@ document.addEventListener('DOMContentLoaded', function () {
             fileListContainer.appendChild(item);
         });
 
-        // input[type=text]에도 표시
         document.getElementById("imageInput").value = selectedFiles.map(f => f.name).join(", ");
     }
 
-    // 폼 전송
+    // 폼 전송 (작성 or 수정)
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
-
         const formData = new FormData(form);
-
-        // checkbox 값 맞추기
         formData.set("isPinned", document.getElementById('pinned').checked);
-
-        // 선택된 파일 배열에서 추가
         selectedFiles.forEach(file => formData.append("images", file));
-
 
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetchWithAuth('/api/notice', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formData
-            });
+            const response = await fetchWithAuth(
+                id ? `/api/notice/${id}` : '/api/notice',
+                {
+                    method: id ? 'PUT' : 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                }
+            );
 
             if (!response.ok) throw new Error("저장 중 오류");
-
-            alert("공지사항이 성공적으로 저장되었습니다.");
+            alert(id ? "공지사항이 수정되었습니다." : "공지사항이 성공적으로 저장되었습니다.");
             window.location.href = '/view/notice';
 
         } catch (err) {
