@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const notice = data.data;
 
             document.getElementById("title").textContent = notice.title;
-            document.getElementById("writer").textContent = notice.userName || "작성자 정보 없음";
+            document.getElementById("writer").textContent = notice.userName;
             document.getElementById("date").textContent = new Date(notice.createdAt).toLocaleDateString();
             document.getElementById("views").textContent = notice.views;
 

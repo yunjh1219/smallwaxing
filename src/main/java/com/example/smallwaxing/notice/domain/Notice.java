@@ -70,4 +70,11 @@ public class Notice {
         image.setNotice(null); // 관계 끊기
     }
 
+    // Notice.java 내부
+    public void updateNotice(String title, String content, boolean isPinned) {
+        this.title = title;
+        this.content = content;
+        this.isPinned = isPinned;
+    }
+
 }

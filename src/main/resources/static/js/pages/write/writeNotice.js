@@ -7,24 +7,38 @@ document.addEventListener('DOMContentLoaded', async function () {
     const id = url.searchParams.get("id"); // 수정 모드 체크
     const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
     let selectedFiles = [];
+    let removedServerFiles = []; // 🔹 서버에서 삭제할 파일 저장용 배열
 
+    // 수정 모드일 때 기존 데이터 불러오기
     // 수정 모드일 때 기존 데이터 불러오기
     if (id) {
         try {
             const res = await fetchWithAuth(`/api/notice/${id}`);
             if (!res.ok) throw new Error("데이터 조회 실패");
-            const data = await res.json();
+            const result = await res.json();
+
+            const notice = result.data; // 실제 공지 데이터 꺼내기
 
             // 입력값 채우기
-            document.getElementById("title").value = data.title;
-            document.getElementById("content").value = data.content;
-            document.getElementById("pinned").checked = data.isPinned;
+            document.getElementById("noticeTitle").value = notice.title;
+            document.getElementById("noticeContent").value = notice.content;
+            document.getElementById("pinned").checked = notice.isPinned;
 
-            // 서버에 저장된 파일도 목록에 표시 (삭제 불가 예시)
-            if (data.images && data.images.length > 0) {
-                data.images.forEach(img => {
+            // 서버에 저장된 파일도 목록에 표시
+            if (notice.imageUrls && notice.imageUrls.length > 0) {
+                notice.imageUrls.forEach((url, idx) => {
                     const item = document.createElement("div");
-                    item.textContent = `📎 ${img}`;
+                    item.textContent = `📎 ${url}`;
+
+                    const removeBtn = document.createElement("button");
+                    removeBtn.textContent = "❌";
+                    removeBtn.style.marginLeft = "10px";
+                    removeBtn.addEventListener("click", () => {
+                        item.remove();
+                        removedServerFiles.push(url); // 삭제 예정 배열에 추가
+                    });
+
+                    item.appendChild(removeBtn);
                     fileListContainer.appendChild(item);
                 });
             }
@@ -33,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert("데이터 불러오기 실패: " + err.message);
         }
     }
+
 
     // 파일 선택
     fileInput.addEventListener("change", function () {
@@ -96,15 +111,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const formData = new FormData(form);
         formData.set("isPinned", document.getElementById('pinned').checked);
         selectedFiles.forEach(file => formData.append("images", file));
-
-        const token = localStorage.getItem('jwtToken');
+        removedServerFiles.forEach(url => formData.append("removeImages", url));
 
         try {
             const response = await fetchWithAuth(
                 id ? `/api/notice/${id}` : '/api/notice',
                 {
                     method: id ? 'PUT' : 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` },
                     body: formData
                 }
             );

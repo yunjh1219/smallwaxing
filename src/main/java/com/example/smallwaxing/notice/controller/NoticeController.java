@@ -2,10 +2,7 @@ package com.example.smallwaxing.notice.controller;
 
 import com.example.smallwaxing.global.common.SuccessResponse;
 import com.example.smallwaxing.global.security.Login;
-import com.example.smallwaxing.notice.dto.NoticeCreateRequest;
-import com.example.smallwaxing.notice.dto.NoticeFindAllResponse;
-import com.example.smallwaxing.notice.dto.NoticePaging;
-import com.example.smallwaxing.notice.dto.NoticeResponse;
+import com.example.smallwaxing.notice.dto.*;
 import com.example.smallwaxing.notice.service.NoticeService;
 import com.example.smallwaxing.user.dto.LoginUser;
 import jakarta.validation.Valid;
@@ -26,21 +23,32 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
+    //생성
     @PostMapping(value = "/notice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public SuccessResponse<Void> createNotice(@Login LoginUser loginUser,
                                               @ModelAttribute @Valid NoticeCreateRequest createDto){
-
-        log.info("제목: {}", createDto.getTitle());
-        log.info("내용: {}", createDto.getContent());
-        log.info("상단 고정 여부: {}", createDto.isPinned());
-        log.info("첨부 파일 개수: {}", createDto.getImages() != null ? createDto.getImages().size() : 0);
 
         noticeService.createNotice(loginUser, createDto);
 
         return SuccessResponse.<Void>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("공지사항 생성 성공")
+                .build();
+    }
+
+    //수정
+    @PutMapping(value = "/notice/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public SuccessResponse<Void> updateNotice(@PathVariable Long id,
+                                              @Login LoginUser loginUser,
+                                              @ModelAttribute @Valid NoticeUpdateRequest updateDto) {
+
+        noticeService.updateNotice(loginUser, id, updateDto);
+
+        return SuccessResponse.<Void>builder()
+                .status(HttpStatus.OK.value())
+                .message("공지사항 수정 성공")
                 .build();
     }
 
